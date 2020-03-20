@@ -17,6 +17,9 @@ class Club:
     student_ids: List[StudentId] = field(default_factory=list)
 
     def add_student(self, student_id: StudentId) -> None:
+        if student_id in self.student_ids:
+            raise DomainException('既に登録済みの生徒です')
+
         self.student_ids.append(student_id)
 
     def approve(self) -> None:

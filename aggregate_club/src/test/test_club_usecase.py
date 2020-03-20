@@ -11,24 +11,39 @@ from aggregate_club.src.usecase.club_usecase import ClubUseCase
 
 class TestClubUseCase(unittest.TestCase):
     def test_add_student(self):
-        club_id = ClubId()
+        with self.subTest('新しい部員を登録できる'):
+            club_id = ClubId()
 
-        dummy_clubs = {club_id: Club(club_id=club_id, name='dummy_name')}
+            dummy_clubs = {club_id: Club(club_id=club_id, name='dummy_name')}
 
-        club_repository = InMemoryClubRepository(dummy_clubs)
+            club_repository = InMemoryClubRepository(dummy_clubs)
 
-        club_usecase = ClubUseCase(club_repository)
+            club_usecase = ClubUseCase(club_repository)
 
-        student_id = StudentId()
+            student_id = StudentId()
 
-        club_usecase.add_student(club_id, student_id)
+            club_usecase.add_student(club_id, student_id)
 
-        expected = Club(club_id=club_id,
-                        name='dummy_name',
-                        club_status=ClubStatus.NOT_APPROVED,
-                        student_ids=[student_id])
+            expected = Club(club_id=club_id,
+                            name='dummy_name',
+                            club_status=ClubStatus.NOT_APPROVED,
+                            student_ids=[student_id])
 
-        self.assertEqual(expected, club_repository.data_dict[club_id])
+            self.assertEqual(expected, club_repository.data_dict[club_id])
+
+        with self.subTest('既に所属している部員は新たに登録できない'):
+            club_id = ClubId()
+
+            student_id = StudentId()
+
+            dummy_clubs = {club_id: Club(club_id=club_id, name='dummy_name', student_ids=[student_id])}
+
+            club_repository = InMemoryClubRepository(dummy_clubs)
+
+            club_usecase = ClubUseCase(club_repository)
+
+            with self.assertRaises(DomainException):
+                club_usecase.add_student(club_id, student_id)
 
     def test_approve_club(self):
         with self.subTest('5名以上の部員がいれば承認できる'):
