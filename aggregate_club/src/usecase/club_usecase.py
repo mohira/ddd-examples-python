@@ -14,3 +14,9 @@ class ClubUseCase:
         club = self.club_repository.find_by_id(club_id)
         club.add_student(student_id)
         self.club_repository.save(club)
+
+    def approve_club(self, club_id: ClubId) -> None:
+        """条件を満たせば、クラブを承認します"""
+        club = self.club_repository.find_by_id(club_id)
+        club.approve()
+        self.club_repository.save(club)
