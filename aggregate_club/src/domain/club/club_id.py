@@ -1,7 +1,10 @@
 import uuid
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 
 @dataclass(frozen=True)
 class ClubId:
-    value: str = str(uuid.uuid4())
+    value: str = field(init=False)
+
+    def __post_init__(self):
+        object.__setattr__(self, 'value', str(uuid.uuid4()))

@@ -1,13 +1,10 @@
 import uuid
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 
 @dataclass(frozen=True)
 class StudentId:
-    value: str
+    value: str = field(init=False)
 
-    def __init__(self):
+    def __post_init__(self):
         object.__setattr__(self, 'value', str(uuid.uuid4()))
-
-    def __str__(self):
-        return self.value
