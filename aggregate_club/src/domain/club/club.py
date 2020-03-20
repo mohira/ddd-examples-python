@@ -20,6 +20,7 @@ class Club:
         if student_id in self.student_ids:
             raise DomainException('既に登録済みの生徒です')
 
+        # 注意: dataclass(frozen=True) でも 外部からListの要素をいじれる
         self.student_ids.append(student_id)
 
     def approve(self) -> None:
