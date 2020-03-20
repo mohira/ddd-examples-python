@@ -11,34 +11,27 @@ from aggregate_club.src.usecase.club_usecase import ClubUseCase
 
 class TestClubUseCase(unittest.TestCase):
     def test_add_student(self):
+        club_id = ClubId()
+
+        student_id = StudentId()
+
         with self.subTest('新しい部員を登録できる'):
-            club_id = ClubId()
-
-            dummy_clubs = {club_id: Club(club_id=club_id, name='dummy_name')}
-
-            club_repository = InMemoryClubRepository(dummy_clubs)
+            club_repository = InMemoryClubRepository({club_id: Club(club_id=club_id, name='dummy_name')})
 
             club_usecase = ClubUseCase(club_repository)
 
-            student_id = StudentId()
-
             club_usecase.add_student(club_id, student_id)
 
-            expected = Club(club_id=club_id,
-                            name='dummy_name',
-                            club_status=ClubStatus.NOT_APPROVED,
-                            student_ids=[student_id])
-
-            self.assertEqual(expected, club_repository.data_dict[club_id])
+            self.assertEqual(Club(club_id=club_id,
+                                  name='dummy_name',
+                                  club_status=ClubStatus.NOT_APPROVED,
+                                  student_ids=[student_id]),
+                             club_repository.data_dict[club_id])
 
         with self.subTest('既に所属している部員は新たに登録できない'):
-            club_id = ClubId()
-
-            student_id = StudentId()
-
-            dummy_clubs = {club_id: Club(club_id=club_id, name='dummy_name', student_ids=[student_id])}
-
-            club_repository = InMemoryClubRepository(dummy_clubs)
+            club_repository = InMemoryClubRepository({club_id: Club(club_id=club_id,
+                                                                    name='dummy_name',
+                                                                    student_ids=[student_id])})
 
             club_usecase = ClubUseCase(club_repository)
 
@@ -46,37 +39,28 @@ class TestClubUseCase(unittest.TestCase):
                 club_usecase.add_student(club_id, student_id)
 
     def test_approve_club(self):
-        with self.subTest('5名以上の部員がいれば承認できる'):
-            club_id = ClubId()
+        club_id = ClubId()
 
-            student_ids_satisfied_approval_condition = [StudentId()] * MINIMUM_APPROVAL_CONDITION
+        with self.subTest('承認条件を満たすだけの部員がいれば承認される'):
+            student_ids_satisfied_approval_condition = [StudentId() for _ in range(MINIMUM_APPROVAL_CONDITION)]
 
-            dummy_clubs = {club_id: Club(club_id=club_id, name='dummy_name',
-                                         student_ids=student_ids_satisfied_approval_condition)}
-
-            club_repository = InMemoryClubRepository(dummy_clubs)
+            club_repository = InMemoryClubRepository({club_id: Club(club_id=club_id, name='dummy_name',
+                                                                    student_ids=student_ids_satisfied_approval_condition)})
 
             club_usecase = ClubUseCase(club_repository)
 
             club_usecase.approve_club(club_id)
 
-            expected = Club(club_id=club_id, name='dummy_name',
-                            club_status=ClubStatus.APPROVED,
-                            student_ids=student_ids_satisfied_approval_condition)
+            self.assertEqual(Club(club_id=club_id, name='dummy_name',
+                                  club_status=ClubStatus.APPROVED,
+                                  student_ids=student_ids_satisfied_approval_condition),
+                             club_repository.data_dict[club_id])
 
-            self.assertEqual(expected, club_repository.data_dict[club_id])
+        with self.subTest('承認条件を下回る部員数の場合には承認されない'):
+            student_ids_not_satisfied_approval_condition = [StudentId() for _ in range(MINIMUM_APPROVAL_CONDITION - 1)]
 
-        with self.subTest('部員が5名未満の場合は承認できない'):
-            club_id = ClubId()
-
-            number_of_students = (MINIMUM_APPROVAL_CONDITION - 1)
-
-            student_ids_not_satisfied_approval_condition = [StudentId()] * number_of_students
-
-            dummy_clubs = {club_id: Club(club_id=club_id, name='dummy_name',
-                                         student_ids=student_ids_not_satisfied_approval_condition)}
-
-            club_repository = InMemoryClubRepository(dummy_clubs)
+            club_repository = InMemoryClubRepository({club_id: Club(club_id=club_id, name='dummy_name',
+                                                                    student_ids=student_ids_not_satisfied_approval_condition)})
 
             club_usecase = ClubUseCase(club_repository)
 
@@ -112,7 +96,7 @@ class TestClubUseCase(unittest.TestCase):
                 club_usecase.quit_student(club_id, other_student_id)
 
         with self.subTest('退部処理後に部員数が最低承認条件を下回った場合は未承認状態になる'):
-            id_a, id_b, id_c, id_d = StudentId(), StudentId(), StudentId(), StudentId()
+            id_a, id_b, id_c, id_d = (StudentId() for _ in range(4))
 
             club_repository = InMemoryClubRepository({club_id: Club(club_id=club_id,
                                                                     name='dummy_name',

@@ -23,7 +23,7 @@ class Club:
         self.student_ids.append(student_id)
 
     def approve(self) -> None:
-        if len(self.student_ids) < MINIMUM_APPROVAL_CONDITION:
+        if self._is_satisfied_approval_condition():
             raise DomainException('生徒数が5名未満なので承認できません。')
 
         object.__setattr__(self, 'club_status', ClubStatus.APPROVED)
@@ -34,5 +34,8 @@ class Club:
 
         self.student_ids.remove(student_id)
 
-        if len(self.student_ids) < MINIMUM_APPROVAL_CONDITION:
+        if self._is_satisfied_approval_condition():
             object.__setattr__(self, 'club_status', ClubStatus.NOT_APPROVED)
+
+    def _is_satisfied_approval_condition(self) -> bool:
+        return len(self.student_ids) < MINIMUM_APPROVAL_CONDITION
