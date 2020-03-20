@@ -27,3 +27,12 @@ class Club:
             raise DomainException('生徒数が5名未満なので承認できません。')
 
         object.__setattr__(self, 'club_status', ClubStatus.APPROVED)
+
+    def quit(self, student_id: StudentId) -> None:
+        if student_id not in self.student_ids:
+            raise DomainException('所属していない生徒です')
+
+        self.student_ids.remove(student_id)
+
+        if len(self.student_ids) < MINIMUM_APPROVAL_CONDITION:
+            object.__setattr__(self, 'club_status', ClubStatus.NOT_APPROVED)

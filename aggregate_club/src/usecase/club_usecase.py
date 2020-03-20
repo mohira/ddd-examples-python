@@ -20,3 +20,11 @@ class ClubUseCase:
         club = self.club_repository.find_by_id(club_id)
         club.approve()
         self.club_repository.save(club)
+
+    def quit_student(self, club_id: ClubId, student_id: StudentId) -> None:
+        """生徒を退部させます"""
+        club = self.club_repository.find_by_id(club_id)
+
+        club.quit(student_id)
+
+        self.club_repository.save(club)

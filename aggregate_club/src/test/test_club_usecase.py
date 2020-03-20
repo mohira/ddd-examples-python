@@ -83,6 +83,53 @@ class TestClubUseCase(unittest.TestCase):
             with self.assertRaises(DomainException):
                 club_usecase.approve_club(club_id)
 
+    def test_quit_club(self):
+        club_id = ClubId()
+        quit_target_student_id = StudentId()
+
+        with self.subTest('所属している生徒を退部させることができる'):
+            club_repository = InMemoryClubRepository({club_id: Club(club_id=club_id,
+                                                                    name='dummy_name',
+                                                                    student_ids=[quit_target_student_id])})
+
+            club_usecase = ClubUseCase(club_repository)
+
+            club_usecase.quit_student(club_id, quit_target_student_id)
+
+            self.assertEqual(Club(club_id=club_id, name='dummy_name', student_ids=[]),
+                             club_repository.data_dict[club_id])
+
+        with self.subTest('所属していない生徒は退部させることはできない'):
+            club_repository = InMemoryClubRepository({club_id: Club(club_id=club_id,
+                                                                    name='dummy_name',
+                                                                    student_ids=[quit_target_student_id])})
+
+            club_usecase = ClubUseCase(club_repository)
+
+            other_student_id = StudentId()
+
+            with self.assertRaises(DomainException):
+                club_usecase.quit_student(club_id, other_student_id)
+
+        with self.subTest('退部処理後に部員数が最低承認条件を下回った場合は未承認状態になる'):
+            id_a, id_b, id_c, id_d = StudentId(), StudentId(), StudentId(), StudentId()
+
+            club_repository = InMemoryClubRepository({club_id: Club(club_id=club_id,
+                                                                    name='dummy_name',
+                                                                    club_status=ClubStatus.APPROVED,
+                                                                    student_ids=[quit_target_student_id,
+                                                                                 id_a, id_b, id_c, id_d])})
+
+            club_usecase = ClubUseCase(club_repository)
+
+            club_usecase.quit_student(club_id, quit_target_student_id)
+
+            self.assertEqual(Club(club_id=club_id,
+                                  name='dummy_name',
+                                  club_status=ClubStatus.NOT_APPROVED,
+                                  student_ids=[id_a, id_b, id_c, id_d]),
+                             club_repository.data_dict[club_id])
+
 
 if __name__ == '__main__':
     unittest.main()
