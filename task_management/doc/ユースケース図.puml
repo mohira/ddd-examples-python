@@ -14,4 +14,11 @@ rectangle {
     }
 }
 
+
+actor Actor2
+
+Actor2 --> (新規ユーザーを登録できる)
+Actor2 -r-> (ユーザーを非活性化できる)
+
+
 @enduml
