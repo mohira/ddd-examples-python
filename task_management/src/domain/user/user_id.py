@@ -15,4 +15,4 @@ class UserId:
 
 class UserStatus(Enum):
     ACTIVE = '活性化'
-    NOT_ACTIVE = '非活性化'
+    IN_ACTIVE = '非活性化'

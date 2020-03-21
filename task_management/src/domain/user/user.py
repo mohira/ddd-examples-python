@@ -13,3 +13,6 @@ class User:
     def __post_init__(self):
         object.__setattr__(self, 'user_id', UserId())
         object.__setattr__(self, 'user_status', UserStatus.ACTIVE)
+
+    def deactivate(self) -> None:
+        object.__setattr__(self, 'user_status', UserStatus.IN_ACTIVE)
