@@ -1,3 +1,4 @@
+from copy import deepcopy
 from typing import Dict
 
 from task_management.src.domain.task.task import Task
@@ -13,4 +14,4 @@ class InMemoryTaskRepository(TaskRepository):
         self.data_dict[task.task_id] = task
 
     def find_by_id(self, task_id: TaskId) -> Task:
-        return self.data_dict[task_id]
+        return deepcopy(self.data_dict[task_id])
