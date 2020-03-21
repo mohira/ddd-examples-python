@@ -1,0 +1,17 @@
+@startuml
+
+actor Actor
+
+rectangle {
+
+    Actor --> (タスクからカレンダーを登録する)
+
+    rectangle 今回のスコープ {
+        Actor --> (タスクの担当者を設定する)
+        Actor --> (タスクを完了する)
+        Actor --> (タスクを延期する)
+        Actor --> (タスクを登録する)
+    }
+}
+
+@enduml

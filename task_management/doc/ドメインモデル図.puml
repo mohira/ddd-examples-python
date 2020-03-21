@@ -1,0 +1,34 @@
+@startuml
+skinparam packageStyle rectangle
+
+
+package タスク集約 {
+    object タスク {
+        タスクID
+        名前
+        期日
+        担当ユーザーID
+    }
+}
+note bottom : \
+    ・タスクは「未完了状態」で作成される \
+    \n・タスクは1日延期を3回だけ行うことができる \
+    \n・非活性化されていないユーザーに担当をつけることができる
+
+
+
+package ユーザー集約 {
+    object ユーザー {
+        ユーザーID
+        ユーザー名
+        ステータス
+    }
+}
+note bottom : \
+    ・最初は活性状態で作成される \
+    \n・非活性化できる \
+    \n・メールアドレスは重複登録できない
+
+タスク -r-> ユーザー
+
+@enduml
