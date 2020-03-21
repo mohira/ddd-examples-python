@@ -12,3 +12,7 @@ class UserRepository(metaclass=ABCMeta):
     @abstractmethod
     def find_by_id(self, user_id: UserId) -> User:
         pass
+
+    @abstractmethod
+    def find_by_mail_address(self, mail_address: str) -> User:
+        pass

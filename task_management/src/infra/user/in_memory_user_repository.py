@@ -15,3 +15,8 @@ class InMemoryUserRepository(UserRepository):
 
     def find_by_id(self, user_id: UserId) -> User:
         return deepcopy(self.data_dict[user_id])
+
+    def find_by_mail_address(self, mail_address: str) -> User:
+        for user_id, user in self.data_dict.items():
+            if user.mail_address == mail_address:
+                return deepcopy(self.data_dict[user_id])
