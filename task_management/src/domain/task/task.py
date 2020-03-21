@@ -31,3 +31,9 @@ class Task:
 
         if self.postpone_count >= MAX_POSTPONE_COUNT:
             raise DomainException('タスクは3回までしか延期できません')
+
+    def done(self) -> None:
+        if self.task_status == TaskStatus.DONE:
+            raise DomainException('既に完了しています')
+
+        object.__setattr__(self, 'task_status', TaskStatus.DONE)
