@@ -7,12 +7,7 @@
 - PDF版ならこっち -> [技術評論社の電子書籍: WEB+DB PRESS Vol.113 | Gihyo Digital Publishing](https://gihyo.jp/dp/ebook/2019/978-4-297-10906-6)
 
 
-## 著者に質問できるコーナー
-- [slido](https://app.sli.do/event/n3jpexnn/live/questions)から質問を投稿できます
-- 集まった質問は [DDD Radio 第2回公開収録 WEB\+DB PRESS 特集 体験ドメイン駆動設計](https://ddd-community-jp.connpass.com/event/153176/) にて取り上げられます！
-
-
-## 書評系ブログ
+## 著者ブログ
 - [WEB+DB PRESS特集「体験 ドメイン駆動」を執筆しました [DDD] - little hands' lab](https://little-hands.hatenablog.com/entry/2019/10/24/web-db-press-ddd)
   - 著者の1人である松岡さん本人のブログ
 

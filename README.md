@@ -1,2 +1,2 @@
 # ddd-examples-python
-https://github.com/little-hands/ddd-examples の Python版
+[little-hands (Koichiro Matsuoka)](https://github.com/little-hands) さんのDDD関連サンプルコードの写経プラスα in Python です。
