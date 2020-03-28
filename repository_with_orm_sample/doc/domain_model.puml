@@ -1,0 +1,10 @@
+@startuml
+object User {
+    ユーザID
+    ユーザ名
+    年齢
+}
+note right:   ・ユーザ名は3文字以上20文字以下 \
+            \n・年齢は20代限定
+
+@enduml

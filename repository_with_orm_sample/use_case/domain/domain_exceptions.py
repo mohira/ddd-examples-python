@@ -1,0 +1,2 @@
+class CanNotRegisterUserException(Exception):
+    pass
