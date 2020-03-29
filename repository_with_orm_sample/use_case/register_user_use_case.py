@@ -10,7 +10,7 @@ from repository_with_orm_sample.domain.user_name import UserName
 from repository_with_orm_sample.domain.user_repository import UserRepository
 from repository_with_orm_sample.domain_service.user_domain_service import UserDomainService
 from repository_with_orm_sample.infra.orator_user_repository import OratorUserRepository
-from repository_with_orm_sample.use_case.domain.domain_exceptions import CanNotRegisterUserException
+from repository_with_orm_sample.use_case.domain_exceptions import CanNotRegisterUserException
 
 
 @dataclass
