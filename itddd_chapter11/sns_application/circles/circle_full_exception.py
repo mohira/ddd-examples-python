@@ -1,0 +1,2 @@
+class CircleFullException(Exception):
+    pass

@@ -1,0 +1,2 @@
+class CanNotRegisterCircleException(Exception):
+    pass

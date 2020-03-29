@@ -1,0 +1,2 @@
+class CircleNotFoundException(Exception):
+    pass

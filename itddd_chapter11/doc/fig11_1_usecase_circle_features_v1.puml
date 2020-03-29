@@ -1,0 +1,6 @@
+@startuml
+
+actor --> (サークルを作成する)
+actor --> (サークルに参加する)
+
+@enduml
