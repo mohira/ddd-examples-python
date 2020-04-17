@@ -4,3 +4,10 @@
 {% for user in users %}
     <li>{{ user.user_name.value }}さん {{ user.user_age.value }}歳</li>
 {% endfor %}
+
+<h2>新規ユーザー作成</h2>
+<form action="/user" method="post">
+    Name: <input type="text" name="name"><br>
+    Age: <input type="number" name="age"><br>
+    <input type="submit">
+</form>
