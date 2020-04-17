@@ -22,4 +22,4 @@ class InMemoryUserRepository(UserRepository):
                 return user
 
     def find_all(self) -> List[DomainUser]:
-        pass
+        return [user for user in self.data_dict.values()]
