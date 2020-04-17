@@ -10,7 +10,8 @@ from repository_with_orm_sample.domain.user_name import UserName
 from repository_with_orm_sample.domain.user_repository import UserRepository
 from repository_with_orm_sample.domain_service.user_domain_service import UserDomainService
 from repository_with_orm_sample.infra.orator_user_repository import OratorUserRepository
-from repository_with_orm_sample.use_case.domain_exceptions import CanNotRegisterUserException
+from repository_with_orm_sample.use_case.domain_exceptions import CanNotRegisterDuplicatedUserException, \
+    CanNotRegisterUserNameException, CanNotRegisterNot20sUserException
 
 
 @dataclass
@@ -24,7 +25,7 @@ class RegisterUserUseCae:
                                  user_age=UserAge(age))
 
         if self.user_domain_service.exists(domain_user):
-            raise CanNotRegisterUserException(f'"{name}" は既に使用されているので登録できないのです')
+            raise CanNotRegisterDuplicatedUserException(f'{name} は既に使用されているので登録できないのです')
 
         self.user_repository.register(domain_user)
 
@@ -34,11 +35,11 @@ def main():
     user_domain_service = UserDomainService(user_repository)
     use_case = RegisterUserUseCae(user_repository, user_domain_service)
 
-    with pytest.raises(ValueError):
+    with pytest.raises(CanNotRegisterUserNameException):
         use_case.create_user(name='a', age=25)
 
-    with pytest.raises(ValueError):
-        use_case.create_user(name='Bob', age=35)
+    with pytest.raises(CanNotRegisterNot20sUserException):
+        use_case.create_user(name='John', age=35)
 
     use_case.create_user(name='Ken', age=20)
     use_case.create_user(name='Bob', age=25)
