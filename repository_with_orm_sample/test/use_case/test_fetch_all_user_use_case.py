@@ -6,11 +6,12 @@ from repository_with_orm_sample.domain.user_id import UserId
 from repository_with_orm_sample.domain.user_name import UserName
 from repository_with_orm_sample.infra.in_memory_user_repository import InMemoryUserRepository
 from repository_with_orm_sample.use_case.fetch_all_user_use_case import FetchAllUserUseCase
+from repository_with_orm_sample.use_case.user_dto import UserDto
 
 
 class TestFetchAllUserUseCase(unittest.TestCase):
 
-    def test_新規ユーザを登録できる(self):
+    def test_ユーザ一覧を取得できる(self):
         user_repository = InMemoryUserRepository({})
         use_case = FetchAllUserUseCase(user_repository)
 
@@ -22,7 +23,11 @@ class TestFetchAllUserUseCase(unittest.TestCase):
         user_repository.data_dict[tom.user_id] = tom
         user_repository.data_dict[ken.user_id] = ken
 
-        self.assertEqual([bob, tom, ken], use_case.fetch_all_users())
+        expected = [UserDto(bob.user_id.value, bob.user_name.value, bob.user_age.value),
+                    UserDto(tom.user_id.value, tom.user_name.value, tom.user_age.value),
+                    UserDto(ken.user_id.value, ken.user_name.value, ken.user_age.value)]
+
+        self.assertEqual(expected, use_case.fetch_all_users())
 
 
 if __name__ == '__main__':
